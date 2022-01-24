@@ -5,26 +5,27 @@ import { borderData } from './token-border-config.js'
 Token.prototype.refresh = (function () {
 	const cached = Token.prototype.refresh;
 	return function () {
+		let borderSize = this.data?.tempHexValues?.borderSize || this.document.getFlag("gurps-hex-sizes", "borderSize");
+
+		let border = borderData.find(function(border){
+			return border.key == borderSize;
+		});
 
 		//handle rendering temporary pivots used by the config controller
-		if(this.data.tempHexValues?.tempPivot != undefined){
-			this.icon.pivot.y = this.data.tempHexValues.tempPivot.y || 0.0;
-			this.icon.pivot.x = this.data.tempHexValues.tempPivot.x || 0.0;	
-		}
-		else{
-			this.icon.pivot.y = this.document.getFlag("hex-size-support","pivoty") || 0.0;
-			this.icon.pivot.x = this.document.getFlag("hex-size-support","pivotx") || 0.0;
-		}
+		//if (border) {
+		//	this.icon.pivot.y = -0.5; 
+		//	this.icon.pivot.x = 0.0;
+		//} else{
+		//	this.icon.pivot.y = 0.0; 
+		//	this.icon.pivot.x = 0.0;
+		//}
 
 		//execute existing refresh function
 		const p = cached.apply(this, arguments);
 
 		//Now handle rewriting the border if needed
 
-		//get the border size
-		let borderSize = this.data?.tempHexValues?.borderSize || this.document.getFlag("hex-size-support", "borderSize");
-
-		let alwaysShowBorder = this.document.getFlag("hex-size-support", "alwaysShowBorder")
+		let alwaysShowBorder = this.document.getFlag("gurps-hex-sizes", "alwaysShowBorder")
 
 		//handle rerendering the borders for custom border offsets and resizing
 		if(alwaysShowBorder == true || (borderSize != undefined /*&& borderSize != 1*/)){
@@ -40,30 +41,27 @@ Token.prototype.refresh = (function () {
 			}
 
 			if(!!borderColor){
-				let border = borderData.find(function(border){
-					return border.key == borderSize;
-				});
-
-				if(border === undefined){
+				if(border === undefined || borderSize == 0){
 					return p
 				}
+				let columns = canvas.grid.grid.columns;
 
 				//remap the coordinates to the grid's width/height
-				let xyPoints = border.border.map((p) => {
-					if(canvas.grid.grid.columns != true){
-			    		return [(gridW * p[0]), (gridH * p[1])];
-			    	}
-			    	else{
-			    		return [(gridH * p[0]), (gridW * p[1])];
-			    	}
-			    });
+				let startPoints = border.border.map((p) => {
+					if(columns){
+						return [(gridH * (p[0] + border.shiftX)), (gridW * (p[1] + border.shiftY))];
+					}
+					else{
+						return [(gridW * (p[0] + border.shiftY)), (gridH * (p[1] + border.shiftX))];
+					}
+				});
 
+				
 				//is this grid using columns?
-				let columns = canvas.grid.grid.columns;
 				let alt = getAltOrientationFlag(this);
 
-				let borderRotationOffset = 0;
-				if(columns){
+				let borderRotationOffset = this.data.rotation; //0;
+				if(!columns){
 					borderRotationOffset -= 30;
 				}
 				if(alt){
@@ -76,23 +74,30 @@ Token.prototype.refresh = (function () {
 			    const cosTheta = Math.cos((borderRotationOffset) * 0.0174533);
 			    const sinTheta = Math.sin((borderRotationOffset) * 0.0174533);
 
-			    let rotatedPoints = xyPoints.map( (point) => {
-			    	let x = cosTheta * point[0] + (-1 * sinTheta * point[1])
-			    	let y = sinTheta * point[0] + cosTheta*point[1]
+			    let rotatedPoints = startPoints.map( (point) => {
+					let x1 = point[0] - (border.shiftX * gridH);
+					let y1 = point[1] - (border.shiftY * gridW);
+			    	let xr = cosTheta * x1 + (-1 * sinTheta * y1);
+			    	let yr = sinTheta * x1 + cosTheta* y1;
+					let x = xr + (border.shiftX * gridH);
+					let y = yr + (border.shiftY * gridW);
 			    	return [x,y]
 			    })
 			    
 			    let shiftedPoints = rotatedPoints.map((point) => {
-			    	const x = point[0] + border.width * gridW / 2
-			    	const y = point[1] +  border.height * gridH / 2
+			    	const x = point[0] + (gridW * border.width / 2)
+			    	const y = point[1] + (gridH * border.height / 2)
 			    	return [x,y]
 			    	})
 
-				this.hitArea = new PIXI.Polygon(shiftedPoints.flat())
+				
+				let xyPoints = shiftedPoints;
+
+				this.hitArea = new PIXI.Polygon(xyPoints.flat())
 				
 				this.border.clear()
-				this.border.lineStyle(4, 0x000000, 0.8).drawPolygon(shiftedPoints.flat());
-				this.border.lineStyle(2, borderColor || 0xFF9829, 1.0).drawPolygon(shiftedPoints.flat());
+				this.border.lineStyle(4, 0x000000, 0.8).drawPolygon(xyPoints.flat());
+				this.border.lineStyle(2, borderColor || 0xFF9829, 1.0).drawPolygon(xyPoints.flat());
 
 				//Muck around with layering to get the border on top
 				if(alwaysShowBorder){

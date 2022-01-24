@@ -1,4 +1,6 @@
 
+import { borderData } from './token-border-config.js'
+
 export class HexTokenConfig extends FormApplication {
 
 	originalPosition = {x: 0, y:0}
@@ -21,13 +23,13 @@ export class HexTokenConfig extends FormApplication {
     	//prevent the arrowkeys from moving the token by setting a locking value
     	this.object.data.tempHexValues = {}
     	this.object.data.tempHexValues.locked = true;
-    	this.object.data.tempHexValues.tempPivot = {x: this.object.document.getFlag('hex-size-support','pivotx'), y:this.object.document.getFlag('hex-size-support','pivoty')}
+    	this.object.data.tempHexValues.tempPivot = {x: this.object.document.getFlag('gurps-hex-sizes','pivotx'), y:this.object.document.getFlag('gurps-hex-sizes','pivoty')}
 	}
 
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			classes: ["sheet", "scene-sheet"],
-			template: "modules/hex-size-support/templates/hex-token-config.html",
+			template: "modules/gurps-hex-sizes/templates/hex-token-config.html",
 			width: 420,
 			height: "auto",
 			tabs: [{navSelector: ".tabs", contentSelector: "form", initial: "image"}]
@@ -41,15 +43,15 @@ export class HexTokenConfig extends FormApplication {
     return {
     	foo: this.foo || "",
     	options: this.options,
-    	pivotX: this.object.document.getFlag('hex-size-support','pivotx'),
-    	pivotY: this.object.document.getFlag('hex-size-support','pivoty'),
+    	pivotX: this.object.document.getFlag('gurps-hex-sizes','pivotx'),
+    	pivotY: this.object.document.getFlag('gurps-hex-sizes','pivoty'),
     	scale: this.object.data.scale,
-      alternateOrientation: this.object.document.getFlag('hex-size-support','alternateOrientation'),
-    	borderType: this.object.document.getFlag('hex-size-support','borderSize'),
-    	altSnapping: this.object.document.getFlag('hex-size-support','altSnapping'),
-    	vertexSnap: this.object.document.getFlag('hex-size-support','evenSnap'),
-      alwaysShowBorder: this.object.document.getFlag('hex-size-support','alwaysShowBorder'),
-      templates: templateArray
+        alternateOrientation: this.object.document.getFlag('gurps-hex-sizes','alternateOrientation'),
+    	borderType: this.object.document.getFlag('gurps-hex-sizes','borderSize'),
+    	altSnapping: this.object.document.getFlag('gurps-hex-sizes','altSnapping'),
+    	vertexSnap: this.object.document.getFlag('gurps-hex-sizes','evenSnap'),
+        alwaysShowBorder: this.object.document.getFlag('gurps-hex-sizes','alwaysShowBorder'),
+        sizeOptions: borderData,
     };
   }
 
@@ -76,8 +78,8 @@ export class HexTokenConfig extends FormApplication {
   	if(index > -1){
   		let options = templateArray[index];
   		this.object.data.scale = options.scale;
-  		this.object.data.height = options.borderSize;
-  		this.object.data.width = options.borderSize;
+  		this.object.data.height = 1; //options.borderSize;
+  		this.object.data.width = 1; //options.borderSize;
 
   		this.object.data.tempHexValues = {
   			tempPivot : options.pivot,
@@ -104,8 +106,8 @@ export class HexTokenConfig extends FormApplication {
   }
 
   _updateFlagCheckboxes(){
-  	this.form.elements['altSnapping'].checked = this.object.data.tempHexValues.altSnapping;
-  	this.form.elements['evenSnap'].checked = this.object.data.tempHexValues.vertexSnap;
+//  	this.form.elements['altSnapping'].checked = this.object.data.tempHexValues.altSnapping;
+//  	this.form.elements['evenSnap'].checked = this.object.data.tempHexValues.vertexSnap;
   }
 
   _changeBorder(border){
@@ -129,25 +131,25 @@ export class HexTokenConfig extends FormApplication {
 	  	this.object.setPosition(this.originalPosition.x, this.originalPosition.y)
   	}
   	else{
-  		// this.object.data.flags['hex-size-support'].altSnapping = true;
+  		// this.object.data.flags['gurps-hex-sizes'].altSnapping = true;
   		this.object.data.tempHexValues.altSnapping = true;
 
   		if(border % 2 == 0){
-			// this.object.data.flags['hex-size-support'].evenSnap = true;
+			// this.object.data.flags['gurps-hex-sizes'].evenSnap = true;
 			this.object.data.tempHexValues.vertexSnap = true;
   		}
   		else{
-  			// this.object.data.flags['hex-size-support'].evenSnap = false;
+  			// this.object.data.flags['gurps-hex-sizes'].evenSnap = false;
   			this.object.data.tempHexValues.vertexSnap = false;
   		}
 
-  		this.object.data.width = border;
-  		this.object.data.height = border;
+  		this.object.data.width = borderData[border].width;
+  		this.object.data.height = borderData[border].height;
 
   		//Update the source values as well. I think these are cached versions of what the backend returns. 
   		//Listen, this is gross. I know it. The only alternatives I could think of were way worse :/
-  		this.object.data._source.width = border;
-  		this.object.data._source.height = border;
+  		this.object.data._source.width = borderData[border].width;
+  		this.object.data._source.height = borderData[border].height;
 
 	  	this.object.data.tempHexValues.borderSize = border;
 
@@ -210,10 +212,10 @@ export class HexTokenConfig extends FormApplication {
     event.preventDefault();
 
     //TODO implement temp flags so they aren't automatically updated even if the form is cancelled
-	token.data.tempHexValues.tempPivot.x = parseFloat(this.form.elements.pivotx.value);
-	token.data.tempHexValues.tempPivot.y = parseFloat(this.form.elements.pivoty.value);
-	token.data.scale = parseFloat(this.form.elements.scale.value);
-  token.data.tempHexValues.alternateOrientation = this.form.elements.alternateOrientation.checked
+//	token.data.tempHexValues.tempPivot.x = parseFloat(this.form.elements.pivotx.value);
+//	token.data.tempHexValues.tempPivot.y = parseFloat(this.form.elements.pivoty.value);
+//	token.data.scale = parseFloat(this.form.elements.scale.value);
+//  token.data.tempHexValues.alternateOrientation = this.form.elements.alternateOrientation.checked
 	token.refresh();
   }
 
@@ -287,13 +289,13 @@ export class HexTokenConfig extends FormApplication {
 		token.data.scale = parseFloat(token.data.scale);
 
 		// console.log(formData)
-		await token.document.setFlag("hex-size-support","pivotx", formData.pivotx);
-		await token.document.setFlag("hex-size-support","pivoty", formData.pivoty);
-		await token.document.setFlag("hex-size-support","borderSize", formData.borderType);
-		await token.document.setFlag("hex-size-support","altSnapping", formData.altSnapping);
-		await token.document.setFlag("hex-size-support","evenSnap", formData.evenSnap);
-		await token.document.setFlag("hex-size-support","alwaysShowBorder", formData.alwaysShowBorder);
-		await token.document.setFlag("hex-size-support","alternateOrientation", formData.alternateOrientation);
+		await token.document.setFlag("gurps-hex-sizes","pivotx", formData.pivotx);
+		await token.document.setFlag("gurps-hex-sizes","pivoty", formData.pivoty);
+		await token.document.setFlag("gurps-hex-sizes","borderSize", formData.borderType);
+		await token.document.setFlag("gurps-hex-sizes","altSnapping", formData.altSnapping);
+		await token.document.setFlag("gurps-hex-sizes","evenSnap", formData.evenSnap);
+		await token.document.setFlag("gurps-hex-sizes","alwaysShowBorder", formData.alwaysShowBorder);
+		await token.document.setFlag("gurps-hex-sizes","alternateOrientation", formData.alternateOrientation);
 
 		await token.document.update(updateData);
 

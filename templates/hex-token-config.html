@@ -31,15 +31,14 @@
 		<div class="form-fields">
 			<select id="borderType" name="borderType" value="{{ borderType }}" data-dtype="Number">
 				{{#select borderType}}
-				<option value="0">None</option>
-				<option value="1">Size 1</option>
-				<option value="2">Size 2</option>
-				<option value="3">Size 3</option>
-				<option value="4">Size 4</option>
+				{{#each sizeOptions as |option|}}
+					<option value="{{option.key}}">{{option.name}}</option>
+				{{/each}}
 				{{/select}}
 			</select>
 		</div>
 	</div>
+<!--
 	<div class="form-group">
 		<label>Alternate Orientation(Size 2/4/etc)</label>
 		<input type="checkbox" name="alternateOrientation" {{checked alternateOrientation}}>
@@ -71,12 +70,12 @@
 		<input type="checkbox" name="evenSnap" {{checked vertexSnap}}>
 	</div>
 	<div class="form-group">
-		<!-- Turns out, it's a massive rework to get size 1 tokens to work with always showing borders...-->
+		< !-- Turns out, it's a massive rework to get size 1 tokens to work with always showing borders...-- >
 		<label class="checkbox">Always show border</label>
 		<input type="checkbox" name="alwaysShowBorder" {{checked alwaysShowBorder}}>
 		<p class="notes">Border Size must be set to a value other than None</p>
 	</div>
-
+-->
 	<button type="submit" id="configAdvHex" title="Save Changes">
 	<i class="fas fa-draw-polygon fa-fw"></i> Save Changes
 	</button>

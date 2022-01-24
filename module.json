@@ -1,18 +1,18 @@
 {
-  "name": "hex-size-support",
-  "title": "Hex Token Size Support",
-  "description": "Improves support for hexagonal tokens of sizes greater than one by altering the grid snapping rules",
-  "author": "Ourobor",
-  "version": "1.1.0",
-  "minimumCoreVersion": "0.8.6",
-  "compatibleCoreVersion": "0.8.6",
+  "name": "gurps-hex-sizes",
+  "title": "GURPS Token Size Support",
+  "description": "Adds support for multi hex tokens based on GURPS. Based on Hex Size Support",
+  "author": "Scimon",
+  "version": "0.0.1",
+  "minimumCoreVersion": "9.2.4",
+  "compatibleCoreVersion": "9.2.4",
   "esmodules": [
     "modules/hooks.js",
     "modules/ruler-changes.js",
     "modules/helpers.js",
     "modules/token-changes.js"
   ],
-  "url": "https://github.com/Ourobor/Hex-Size-Support",
-  "manifest": "https://raw.githubusercontent.com/Ourobor/Hex-Size-Support/1.1.0/module.json",
-  "download": "https://github.com/Ourobor/Hex-Size-Support/archive/refs/tags/1.1.0.zip"
+  "url": "https://github.com/Scimon/gurps-hex-sizes",
+  "manifest": "https://raw.githubusercontent.com/Scimon/gurps-hex-sizes/0.0.1/module.json",
+  "download": "https://github.com/Scimon/gurps-hex-sizes/archive/refs/tags/0.0.1.zip"
 }
