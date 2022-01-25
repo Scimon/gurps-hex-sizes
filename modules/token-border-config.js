@@ -4,12 +4,10 @@ export const borderData = [
 		"key": 0,	
 	},
 	{
-		"name": "Size 1 (Upright)",
+		"name": "Size 0 (Upright or Boxy)",
 		"key": 1,
 		"height": 1,
 		"width": 1,
-		"shiftY": 0,
-		"shiftX": 0,
 		"border": [
 //			[0,0],
 //			[1,0],
@@ -25,12 +23,10 @@ export const borderData = [
 		]
 	},
 	{
-		"name": "Size 1 (Sleek)",
+		"name": "Size 0 (Sleek)",
 		"key": 2,
-		"height": 1,
+		"height": 2,
 		"width": 1,
-		"shiftY": 0,
-		"shiftX": 0,
 		"border": [
 			[-0.5, -0.25],
 			[ 0.0, -0.5 ],
@@ -46,12 +42,10 @@ export const borderData = [
 		],
 	},
 	{
-		"name": "Size 2 (Sleek)",
+		"name": "Size 1 (Sleek)",
 		"key": 3,
-		"height": 1,
+		"height": 3,
 		"width": 1,
-		"shiftY": 0,
-		"shiftX": 0,
 		"border": [
 			[-0.5, -0.25],
 			[ 0.0, -0.5 ],

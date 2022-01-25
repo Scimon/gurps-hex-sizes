@@ -78,8 +78,8 @@ export class HexTokenConfig extends FormApplication {
   	if(index > -1){
   		let options = templateArray[index];
   		this.object.data.scale = options.scale;
-  		this.object.data.height = 1; //options.borderSize;
-  		this.object.data.width = 1; //options.borderSize;
+  		this.object.data.height = 1; 
+  		this.object.data.width = 1;
 
   		this.object.data.tempHexValues = {
   			tempPivot : options.pivot,
@@ -115,7 +115,7 @@ export class HexTokenConfig extends FormApplication {
   	if(border == 0){
 
   		this.object.data.tempHexValues.borderSize = 1;
-
+		  
   		this.object.data.height = 1;
   		this.object.data.width = 1;
   		this.object.data._source.height = 1;
@@ -134,24 +134,13 @@ export class HexTokenConfig extends FormApplication {
   		// this.object.data.flags['gurps-hex-sizes'].altSnapping = true;
   		this.object.data.tempHexValues.altSnapping = true;
 
-  		if(border % 2 == 0){
-			// this.object.data.flags['gurps-hex-sizes'].evenSnap = true;
-			this.object.data.tempHexValues.vertexSnap = true;
-  		}
-  		else{
-  			// this.object.data.flags['gurps-hex-sizes'].evenSnap = false;
-  			this.object.data.tempHexValues.vertexSnap = false;
-  		}
-
-  		this.object.data.width = borderData[border].width;
-  		this.object.data.height = borderData[border].height;
-
-  		//Update the source values as well. I think these are cached versions of what the backend returns. 
-  		//Listen, this is gross. I know it. The only alternatives I could think of were way worse :/
-  		this.object.data._source.width = borderData[border].width;
-  		this.object.data._source.height = borderData[border].height;
-
 	  	this.object.data.tempHexValues.borderSize = border;
+
+		let bData = borderData[border];
+  		this.object.data.height = bData.height;
+  		this.object.data.width = bData.width;
+  		this.object.data._source.height = bData.height;
+  		this.object.data._source.width = bData.width;
 
 	  	//scooch the token to get it to realign with the grid
 	  	this.object.setPosition(this.originalPosition.x, this.originalPosition.y).then( value => {
@@ -332,54 +321,3 @@ export class HexTokenConfig extends FormApplication {
   }
 
 }
-
-let templateArray = [
-{
-  name: "Retrograde Size 2 Pointy Top",
-	scale: 1.6,
-	pivot: {
-		x: 0,
-		y: 72
-	},
-	borderSize: 2,
-	borderOffset: 0,
-	altSnapping: true,
-	vertexSnap: true
-},
-{
-  name: "Retrograde Size 2 Flat Top",
-	scale: 1.6,
-	pivot: {
-		x: 0,
-		y: 72
-	},
-	borderSize: 2,
-	borderOffset: 330,
-	altSnapping: true,
-	vertexSnap: true
-},
-{
-  name: "Retrograde Size 3 Pointy",
-	scale: 1.6,
-	pivot: {
-		x: 0,
-		y: 72
-	},
-	borderSize: 3,
-	borderOffset: 0,
-	altSnapping: true,
-	vertexSnap: false
-},
-{
-  name: "Retrograde Size 4 Pointy",
-	scale: 1.37,
-	pivot: {
-		x: 100,
-		y: 0
-	},
-	borderSize: 2,
-	borderOffset: 90,
-	altSnapping: true,
-	vertexSnap: true
-},
-]

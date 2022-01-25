@@ -11,17 +11,21 @@ Token.prototype.refresh = (function () {
 			return border.key == borderSize;
 		});
 
-		//handle rendering temporary pivots used by the config controller
-		//if (border) {
-		//	this.icon.pivot.y = -0.5; 
-		//	this.icon.pivot.x = 0.0;
-		//} else{
-		//	this.icon.pivot.y = 0.0; 
-		//	this.icon.pivot.x = 0.0;
-		//}
+		const gridW = canvas.grid.grid.w;
+		const gridH = canvas.grid.grid.h;
 
 		//execute existing refresh function
 		const p = cached.apply(this, arguments);
+		
+		if(border === undefined || borderSize == 0){
+			return p
+		}
+
+		this.icon.position.set(0,0);
+		this.icon.anchor.set(1-(1/(border.width * 2)),1-(1/(border.height * 2)));
+		this.icon.rotation = this.data.lockRotation ? 0 : Math.toRadians(this.data.rotation);
+		this.icon.position.set(this.w / (border.width * 2), this.h / (border.height * 2));
+		this.icon.alpha = this.data.hidden ? Math.min(this.data.alpha, 0.5) : this.data.alpha;
 
 		//Now handle rewriting the border if needed
 
@@ -31,9 +35,6 @@ Token.prototype.refresh = (function () {
 		if(alwaysShowBorder == true || (borderSize != undefined /*&& borderSize != 1*/)){
 			let borderColor = this._getBorderColor();
 
-			const gridW = canvas.grid.grid.w;
-			const gridH = canvas.grid.grid.h;
-
 
 			//override null if the border is always to be shown
 			if(alwaysShowBorder == true && !borderColor){
@@ -41,18 +42,16 @@ Token.prototype.refresh = (function () {
 			}
 
 			if(!!borderColor){
-				if(border === undefined || borderSize == 0){
-					return p
-				}
+
 				let columns = canvas.grid.grid.columns;
 
 				//remap the coordinates to the grid's width/height
 				let startPoints = border.border.map((p) => {
 					if(columns){
-						return [(gridH * (p[0] + border.shiftX)), (gridW * (p[1] + border.shiftY))];
+						return [(gridH * p[0]), (gridW * p[1])];
 					}
 					else{
-						return [(gridW * (p[0] + border.shiftY)), (gridH * (p[1] + border.shiftX))];
+						return [(gridW * p[0]), (gridH * p[1])];
 					}
 				});
 
@@ -73,18 +72,16 @@ Token.prototype.refresh = (function () {
 			    const sinTheta = Math.sin((borderRotationOffset) * 0.0174533);
 
 			    let rotatedPoints = startPoints.map( (point) => {
-					let x1 = point[0] - (border.shiftX * gridH);
-					let y1 = point[1] - (border.shiftY * gridW);
-			    	let xr = cosTheta * x1 + (-1 * sinTheta * y1);
-			    	let yr = sinTheta * x1 + cosTheta* y1;
-					let x = xr + (border.shiftX * gridH);
-					let y = yr + (border.shiftY * gridW);
+					let x1 = point[0]
+					let y1 = point[1];
+			    	let x = cosTheta * x1 + (-1 * sinTheta * y1);
+			    	let y = sinTheta * x1 + cosTheta* y1;
 			    	return [x,y]
 			    })
 			    
 			    let shiftedPoints = rotatedPoints.map((point) => {
-			    	const x = point[0] + (gridW * border.width / 2)
-			    	const y = point[1] + (gridH * border.height / 2)
+			    	const x = point[0] + (gridW / 2)
+			    	const y = point[1] + (gridH / 2)
 					return [x,y];
 			    })
 
@@ -181,7 +178,6 @@ Token.prototype._getShiftedPosition = function(dx, dy){
 	if(this.data.tempHexValues?.locked == true){
 		return {x: this.x, y:this.y}
 	}
-
 	let altSnapping = getAltSnappingFlag(this)
 
 	//run original code if no flag for alt-snapping
