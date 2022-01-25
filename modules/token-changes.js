@@ -60,10 +60,8 @@ Token.prototype.refresh = (function () {
 				//is this grid using columns?
 				let alt = getAltOrientationFlag(this);
 
-				let borderRotationOffset = this.data.rotation; //0;
-				if(!columns){
-					borderRotationOffset -= 30;
-				}
+				let borderRotationOffset = this.data.rotation - 30;
+
 				if(alt){
 					borderRotationOffset += 180;
 				}
@@ -87,8 +85,8 @@ Token.prototype.refresh = (function () {
 			    let shiftedPoints = rotatedPoints.map((point) => {
 			    	const x = point[0] + (gridW * border.width / 2)
 			    	const y = point[1] + (gridH * border.height / 2)
-			    	return [x,y]
-			    	})
+					return [x,y];
+			    })
 
 				
 				let xyPoints = shiftedPoints;
