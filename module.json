@@ -3,16 +3,28 @@
   "title": "GURPS Token Size Support",
   "description": "Adds support for multi hex tokens based on GURPS. Based on Hex Size Support",
   "author": "Scimon",
+  "authors": [],
+  "url": "https://github.com/Scimon/gurps-hex-sizes",
+  "flags": {},
   "version": "0.0.1",
   "minimumCoreVersion": "9.2.4",
-  "compatibleCoreVersion": "9.2.4",
+  "compatibleCoreVersion": "9.24",
+  "scripts": [],
   "esmodules": [
     "modules/hooks.js",
     "modules/ruler-changes.js",
     "modules/helpers.js",
     "modules/token-changes.js"
   ],
-  "url": "https://github.com/Scimon/gurps-hex-sizes",
+  "styles": [],
+  "languages": [],
+  "packs": [],
+  "system": [],
+  "dependencies": [],
+  "socket": false,
   "manifest": "https://raw.githubusercontent.com/Scimon/gurps-hex-sizes/0.0.1/module.json",
-  "download": "https://github.com/Scimon/gurps-hex-sizes/archive/refs/tags/0.0.1.zip"
+  "download": "https://github.com/Scimon/gurps-hex-sizes/archive/refs/tags/0.0.1.zip",
+  "protected": false,
+  "coreTranslation": false,
+  "library": false
 }

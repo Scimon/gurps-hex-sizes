@@ -1,7 +1,9 @@
 export const borderData = [
 	{
 		"name": "None",
-		"key": 0,	
+		"key": 0,
+		"height": 1,
+		"width": 1,
 	},
 	{
 		"name": "Size 0 (Upright or Boxy)",

@@ -1,7 +1,6 @@
 import { findVertexSnapPoint, getAltSnappingFlag, getEvenSnappingFlag, getAltOrientationFlag, getCenterOffset } from './helpers.js'
 import { borderData } from './token-border-config.js'
 
-//we intercept refresh method(questionably) to set the pivot of the token correctly
 Token.prototype.refresh = (function () {
 	const cached = Token.prototype.refresh;
 	return function () {
@@ -21,13 +20,16 @@ Token.prototype.refresh = (function () {
 			return p
 		}
 
+		console.log(this);
+		this.data.height = 1;//border.height;
+		this.data.width = 1;//border.width;
+		this.icon.height = border.height * gridH;
+		this.icon.width = border.width * gridW;
 		this.icon.position.set(0,0);
 		this.icon.anchor.set(1-(1/(border.width * 2)),1-(1/(border.height * 2)));
 		this.icon.rotation = this.data.lockRotation ? 0 : Math.toRadians(this.data.rotation);
-		this.icon.position.set(this.w / (border.width * 2), this.h / (border.height * 2));
+		this.icon.position.set(this.w /  2, this.h / 2);
 		this.icon.alpha = this.data.hidden ? Math.min(this.data.alpha, 0.5) : this.data.alpha;
-
-		//Now handle rewriting the border if needed
 
 		let alwaysShowBorder = this.document.getFlag("gurps-hex-sizes", "alwaysShowBorder")
 
