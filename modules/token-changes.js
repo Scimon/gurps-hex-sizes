@@ -20,9 +20,8 @@ Token.prototype.refresh = (function () {
 			return p
 		}
 
-		console.log(this);
-		this.data.height = 1;//border.height;
-		this.data.width = 1;//border.width;
+		this.data.height = 1;
+		this.data.width = 1;
 		this.icon.height = border.height * gridH;
 		this.icon.width = border.width * gridW;
 		this.icon.position.set(0,0);
