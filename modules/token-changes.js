@@ -6,9 +6,7 @@ Token.prototype.refresh = (function () {
 	return function () {
 		let borderSize = this.data?.tempHexValues?.borderSize || this.document.getFlag("gurps-hex-sizes", "borderSize");
 
-		let border = borderData.find(function(border){
-			return border.key == borderSize;
-		});
+		let border = borderData[borderSize];
 
 		const gridW = canvas.grid.grid.w;
 		const gridH = canvas.grid.grid.h;
