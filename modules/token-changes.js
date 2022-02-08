@@ -6,9 +6,7 @@ Token.prototype.refresh = (function () {
 	return function () {
 		let borderSize = this.data?.tempHexValues?.borderSize || this.document.getFlag("gurps-hex-sizes", "borderSize");
 
-		let border = borderData.find(function(border){
-			return border.key == borderSize;
-		});
+		let border = borderData[borderSize];
 
 		const gridW = canvas.grid.grid.w;
 		const gridH = canvas.grid.grid.h;
@@ -25,9 +23,11 @@ Token.prototype.refresh = (function () {
 		this.icon.height = border.height * gridH;
 		this.icon.width = border.width * gridW;
 		this.icon.position.set(0,0);
-		this.icon.anchor.set(1-(1/(border.width * 2)),1-(1/(border.height * 2)));
+		this.icon.anchor.set(1 / 2, 1 - (1 / (border.height * 2)));
+		this.icon.position.set((this.w) /  2, (this.h) / 2);
 		this.icon.rotation = this.data.lockRotation ? 0 : Math.toRadians(this.data.rotation);
-		this.icon.position.set(this.w /  2, this.h / 2);
+		if ( border.rotHalf ) { this.icon.rotation -= ( 30 * (Math.PI/180))}
+
 		this.icon.alpha = this.data.hidden ? Math.min(this.data.alpha, 0.5) : this.data.alpha;
 
 		let alwaysShowBorder = this.document.getFlag("gurps-hex-sizes", "alwaysShowBorder")
