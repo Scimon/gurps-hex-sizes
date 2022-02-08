@@ -8,3 +8,4 @@ CHANGES
 0.0.2
 - Using InjectConfig for move the config into the Token config not the HUD so it should work for Prototype Tokens
 - HUD sits on creatures heads.
+- Size 2 sizes added.
