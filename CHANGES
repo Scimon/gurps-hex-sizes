@@ -1,11 +1,14 @@
 CHANGES
 
-0.0.1
-- Initial fork and updates
-- Hex grids surrounding token image and rotation around head in place.
-- Positioning of the Token is currently still basing on the center, so HUD is broken
+0.0.3
+- Adding override size option
 
 0.0.2
 - Using InjectConfig for move the config into the Token config not the HUD so it should work for Prototype Tokens
 - HUD sits on creatures heads.
 - Size 2 sizes added.
+
+0.0.1
+- Initial fork and updates
+- Hex grids surrounding token image and rotation around head in place.
+- Positioning of the Token is currently still basing on the center, so HUD is broken

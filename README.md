@@ -13,3 +13,11 @@ Currently supports three shapes more coming.
 Rotation is done around the head hex as per the GURPS rules.
 
 Note that for some sizes (Size 2 Upright for example) the rotation hex is added to the front of the figure.
+
+## Token Sizing
+
+The module allows for two options for token sizing. Either you can set the token size as normal 
+and it will place your token in the centre of the hex shape. 
+Otherwise you can select the 'Override Image Size' option, this will resize your image based on
+the size required for the image. This works with images that have the same ratio as the
+expected grid size. 

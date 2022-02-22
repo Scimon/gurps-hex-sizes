@@ -4,7 +4,8 @@ import { borderData } from './token-border-config.js'
 Token.prototype.refresh = (function () {
 	const cached = Token.prototype.refresh;
 	return function () {
-		let borderSize = this.data?.tempHexValues?.borderSize || this.document.getFlag("gurps-hex-sizes", "borderSize");
+		let borderSize = this.document.getFlag("gurps-hex-sizes", "borderSize");
+		let overrideSize = this.document.getFlag("gurps-hex-sizes", "overrideSize");
 
 		let border = borderData[borderSize];
 
@@ -20,11 +21,14 @@ Token.prototype.refresh = (function () {
 
 		this.data.height = 1;
 		this.data.width = 1;
-		this.icon.height = border.height * gridH;
-		this.icon.width = border.width * gridW;
-		this.icon.position.set(0,0);
-		this.icon.anchor.set(1 / 2, 1 - (1 / (border.height * 2)));
-		this.icon.position.set((this.w) /  2, (this.h) / 2);
+		if ( overrideSize ) {
+			this.icon.height = border.height * gridH;
+			this.icon.width = border.width * gridW;
+			this.icon.position.set(0,0);
+			this.icon.anchor.set(1 / 2, 1 - (1 / (border.height * 2)));
+			this.icon.position.set((this.w) /  2, (this.h) / 2);
+	
+		}
 		this.icon.rotation = this.data.lockRotation ? 0 : Math.toRadians(this.data.rotation);
 		if ( border.rotHalf ) { this.icon.rotation -= ( 30 * (Math.PI/180))}
 
