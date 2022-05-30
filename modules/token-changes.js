@@ -11,6 +11,8 @@ Token.prototype.refresh = (function () {
 
 		const gridW = canvas.grid.grid.w;
 		const gridH = canvas.grid.grid.h;
+		const halfW = gridW / 2;
+		const halfH = gridH / 2;
 
 		//execute existing refresh function
 		const p = cached.apply(this, arguments);
@@ -21,14 +23,13 @@ Token.prototype.refresh = (function () {
 
 		this.data.height = 1;
 		this.data.width = 1;
+		this.icon.anchor.set(1/2,border.height/2);
 		if ( overrideSize ) {
 			this.icon.height = border.height * gridH;
 			this.icon.width = border.width * gridW;
-			this.icon.position.set(0,0);
-			this.icon.anchor.set(1 / 2, 1 - (1 / (border.height * 2)));
-			this.icon.position.set((this.w) /  2, (this.h) / 2);
-	
+			this.icon.position.set(halfW, halfH);
 		}
+
 		this.icon.rotation = this.data.lockRotation ? 0 : Math.toRadians(this.data.rotation);
 		if ( border.rotHalf ) { this.icon.rotation -= ( 30 * (Math.PI/180))}
 

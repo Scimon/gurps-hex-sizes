@@ -8,7 +8,7 @@
   "flags": {},
   "version": "0.0.3",
   "minimumCoreVersion": "9.2.4",
-  "compatibleCoreVersion": "9.24",
+  "compatibleCoreVersion": "9.2.6",
   "scripts": [],
   "esmodules": [
     "modules/hooks.js",
